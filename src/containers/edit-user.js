@@ -3,6 +3,7 @@ import { UpdateUser } from "./class/update-user";
 import { addUser } from "../actions/user";
 import { EDIT_USER } from "../constants/action-user";
 import { connect } from "react-redux";
+import ReactDOM from "react-dom";
 import "../assets/css/edit-user.css";
 let axios = require("axios");
 const initialState = {
@@ -19,11 +20,11 @@ const initialState = {
     phone: "",
     description: ""
   },
-  emailValid: false,
-  first_nameValid: false,
-  last_nameValid: false,
-  phoneValid: false,
-  formValid: false,
+  emailValid: true,
+  first_nameValid: true,
+  last_nameValid: true,
+  phoneValid: true,
+  formValid: true,
   descriptionValid: true,
   addDescription: false
 };
@@ -38,7 +39,6 @@ class EditUser extends Component {
   componentWillReceiveProps(nextProps) {
    
     if (nextProps.userState.action && nextProps.userState.action === EDIT_USER) {
-        document.body.querySelector(".edit-user").style.display = "block";
      this.resetData(nextProps.userState.data);
     }
     // return true;
@@ -49,10 +49,14 @@ class EditUser extends Component {
         first_name: user.first_name,
         last_name: user.last_name,
         phone: user.phone,
+        addDescription:  (user.about === "") ? false : true,
         description: user.about})
     });
-    document.body.querySelector(".body-description").style.display = (user.about === "") ? "none" : "block";
-    document.body.querySelector("#add-about").checked = (user.about === "") ? false : true;
+    const node = ReactDOM.findDOMNode(this);
+    console.log('node',node);
+    node.querySelector(".body-description").style.display = (user.about === "") ? "none" : "block";
+    node.querySelector("#edit-about").checked = (user.about === "") ? false : true;
+    node.classList.remove("hide-edit-user");
   }
   handleUserInput = e => {
     const name = e.target.name;
@@ -159,7 +163,10 @@ class EditUser extends Component {
       });
   }
   checkAddDescription(e) {
-    document.body.querySelector(".body-description").style.display = e.target
+    const node = ReactDOM.findDOMNode(this);
+    console.log(e.target
+        .checked);
+    node.querySelector(".body-description").style.display = e.target
       .checked
       ? "block"
       : "none";
@@ -171,7 +178,7 @@ class EditUser extends Component {
   }
   render() {
     return (
-      <div className="her-container edit-user">
+      <div className="edit-user her-container hide-edit-user">
         <div className="her-head">
           <h3>Edit user</h3>
         </div>
@@ -250,11 +257,11 @@ class EditUser extends Component {
                 <div className="add-description">
                   <input
                     type="checkbox"
-                    id="add-about"
+                    id="edit-about"
                     name="add-about"
                     onChange={this.checkAddDescription}
                   />
-                  <label htmlFor="add-about">Add description user</label>
+                  <label htmlFor="edit-about">Add description user</label>
                 </div>
                 <div
                   className={`body-description form-group ${this.errorClass(

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { ADD_USER } from "../constants/action-user";
 import { connect } from "react-redux";
-import {EditUser} from "../assets/css/user-list.css";
+import {EditUser} from "../actions/user";
+import "../assets/css/user-list.css";
 let axios = require("axios");
 class ListUser extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class ListUser extends Component {
   }
   EditUser (e) {
     let index = Number(e.target.getAttribute("index"));
-this.props.EditUser(this.state.users[index]);
+this.props.onInitEditUser(this.state.users[index]);
   }
   RemoveUser(e) {
     let id_user = Number(e.target.getAttribute("id-user"));
@@ -77,7 +78,7 @@ this.props.EditUser(this.state.users[index]);
                 <p>Email: {item.email}</p>
                 <p>Phone: {item.phone}</p>
                 <p style={{ display: item.about === "" ? "none" : "block" }}>
-                  Description: {item.abaout}
+                  Description: {item.about}
                 </p>
                 <div className="edit" index={index} onClick={this.EditUser} />
                 <div
@@ -101,7 +102,7 @@ let mapStateToProps = state => {
 
 let mapDispatchToProps = dispatch => {
   return {
-    EditUser: data => {
+    onInitEditUser: data => {
         dispatch(EditUser(data));
       }
   };

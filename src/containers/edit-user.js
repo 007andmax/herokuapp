@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { CreateUser } from "./class/create-user";
-import { addUser, EditUser } from "../actions/user";
-import { ADD_USER,EDIT_USER } from "../constants/action-user";
+import { UpdateUser } from "./class/update-user";
+import { addUser } from "../actions/user";
+import { EDIT_USER } from "../constants/action-user";
 import { connect } from "react-redux";
-import "../assets/css/add-user.css";
+import "../assets/css/edit-user.css";
 let axios = require("axios");
 const initialState = {
+    id:0,
   email: "",
   first_name: "",
   last_name: "",
@@ -26,27 +27,32 @@ const initialState = {
   descriptionValid: true,
   addDescription: false
 };
-class AddUser extends Component {
+class EditUser extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
 
-    this.addUser = this.addUser.bind(this);
+    this.UpdateUser = this.UpdateUser.bind(this);
     this.checkAddDescription = this.checkAddDescription.bind(this);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.userState.action && nextProps.userState.action === ADD_USER) {
-      let users = this.state.users;
-      users.push(nextProps.userState.data);
-      this.setState({ users: users });
+   
+    if (nextProps.userState.action && nextProps.userState.action === EDIT_USER) {
+        document.body.querySelector(".edit-user").style.display = "block";
+     this.resetData(nextProps.userState.data);
     }
-  
     // return true;
   }
-  resetData() {
-    this.setState(initialState);
-    document.body.querySelector(".body-description").style.display = "none";
-    document.body.querySelector("#add-about").checked = false;
+  resetData(user) {
+    this.setState(initialState,() => {
+        this.setState({id:user.id, email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone: user.phone,
+        description: user.about})
+    });
+    document.body.querySelector(".body-description").style.display = (user.about === "") ? "none" : "block";
+    document.body.querySelector("#add-about").checked = (user.about === "") ? false : true;
   }
   handleUserInput = e => {
     const name = e.target.name;
@@ -128,9 +134,9 @@ class AddUser extends Component {
   errorClass(error) {
     return error.length === 0 ? "" : "has-error";
   }
-  addUser(e) {
+  UpdateUser(e) {
     e.preventDefault();
-    let createUser = new CreateUser(
+    let updateUser = new UpdateUser(
       this.props.apikey,
       this.state.email,
       this.state.first_name,
@@ -138,17 +144,15 @@ class AddUser extends Component {
       this.state.phone,
       this.state.addDescription ? this.state.description : undefined
     );
-    console.log("createUser", createUser);
+    console.log("updateUser", updateUser);
     axios
-      .post("https://frontend-test-job.herokuapp.com/api/v1/users", createUser)
+      .put(`https://frontend-test-job.herokuapp.com/api/v1/users/${this.state.id}`, {params:updateUser})
       .then(response => {
         console.log(response);
         if (response.status === 200) {
-          this.resetData();
-          this.props.addUserComplite(response.data);
-        } else {
-          
-        }
+      /*    this.resetData();
+          this.props.addUserComplite(response.data);*/
+        } 
       })
       .catch(function(error) {
         console.log(error);
@@ -167,9 +171,9 @@ class AddUser extends Component {
   }
   render() {
     return (
-      <div className="her-container">
+      <div className="her-container edit-user">
         <div className="her-head">
-          <h3>Add user</h3>
+          <h3>Edit user</h3>
         </div>
         <div className="her-body add-user-body">
           <form>
@@ -271,10 +275,10 @@ class AddUser extends Component {
               <div className="col-12">
                 <button
                   type="submit"
-                  onClick={this.addUser}
+                  onClick={this.UpdateUser}
                   disabled={!this.state.formValid}
                 >
-                  Add
+                  Save
                 </button>
               </div>
             </div>
@@ -285,7 +289,7 @@ class AddUser extends Component {
   }
 }
 let mapStateToProps = state => {
-  return {};
+    return { userState: state.userState };
 };
 
 let mapDispatchToProps = dispatch => {
@@ -298,4 +302,4 @@ let mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddUser);
+)(EditUser);

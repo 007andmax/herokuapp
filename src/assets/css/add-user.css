@@ -1,49 +1,14 @@
-.add-user {
-  display: block;
-  width: 100%;
-  height: auto;
-  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-}
-
-.add-user .add-user-head {
-  display: block;
-  width: 100%;
-  height: 40px;
-  border-color: rgba(10, 10, 10, 0.7);
-  background: #35435b;
-  border: none;
-  padding: 10px 15px;
-}
-
-.add-user .add-user-head h3 {
-  font-family: 'Roboto', sans-serif;
-  margin: 0px;
-  font-size: 16px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
-  font-weight: 700;
-}
-
-.add-user .add-user-body {
-  display: block;
-  width: 100%;
-  height: auto;
-  background-color: rgba(10, 10, 10, 0.7);
-  padding: 15px;
-}
-
-.add-user .add-user-body .item-edit-data-user {
+.add-user-body .item-edit-data-user {
   margin: 0px 0px 20px 0px;
 }
 
-.add-user .add-user-body .item-edit-data-user label {
+.add-user-body .item-edit-data-user label {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   color: white;
 }
 
-.add-user .add-user-body .item-edit-data-user input, .add-user .add-user-body .item-edit-data-user textarea {
+.add-user-body .item-edit-data-user input[type="text"], .add-user-body .item-edit-data-user textarea {
   height: 43px;
   padding: 10px 16px;
   font-family: 'Roboto', sans-serif;
@@ -54,15 +19,26 @@
   color: rgba(255, 255, 255, 0.65);
 }
 
-.add-user .add-user-body .item-edit-data-user textarea {
+.add-user-body .item-edit-data-user textarea {
   height: auto;
 }
 
-.add-user .add-user-body .has-error input {
+.add-user-body .item-edit-data-user span {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: red;
+  margin: 0px 0px 0px 10px;
+}
+
+.add-user-body .item-edit-data-user .has-error span {
+  display: inline-block;
+}
+
+.add-user-body .has-error input {
   border: 1px solid red;
 }
 
-.add-user .add-user-body button {
+.add-user-body button {
   display: block;
   margin: 0px auto;
   font-weight: 400;
@@ -86,5 +62,21 @@
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
+}
+
+.add-user-body .add-description {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.add-user-body .add-description label {
+  margin-left: .5rem;
+}
+
+.add-user-body .body-description {
+  display: none;
+  width: 100%;
+  height: auto;
 }
 /*# sourceMappingURL=add-user.css.map */

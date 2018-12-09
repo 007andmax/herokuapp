@@ -1,71 +1,64 @@
-.add-user
-    display: block
-    width: 100%
-    height: auto
-    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.15)
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15)
-    .add-user-head
-        display: block
-        width: 100%
-        height: 40px
-        border-color: rgba(10, 10, 10, 0.7)
-        background: #35435b
-        border: none
-        padding: 10px 15px
-        h3
+
+.add-user-body
+    .item-edit-data-user
+        margin: 0px 0px 20px 0px
+        label
             font-family: 'Roboto', sans-serif
+            font-size: 14px
+            color: rgba(255, 255, 255, 1)
+        input[type="text"],textarea
+            height: 43px
+            padding: 10px 16px
+            font-family: 'Roboto', sans-serif
+            font-size: 14px
             margin: 0px
-            font-size: 16px
-            text-transform: uppercase
+            background-color: #303030
+            border: 1px solid rgba(0, 0, 0, 0.4)
             color: rgba(255, 255, 255, 0.65)
-            font-weight: 700
-    .add-user-body
+        textarea
+            height:  auto
+        span
+            font-family: 'Roboto', sans-serif
+            font-size: 14px
+            color: red
+            margin: 0px 0px 0px 10px
+        .has-error
+            span
+                display: inline-block
+    .has-error
+        input
+            border: 1px solid red
+    button
+        display: block
+        margin: 0px auto
+        font-weight: 400
+        text-align: center
+        vertical-align: middle
+        -ms-touch-action: manipulation
+        touch-action: manipulation
+        font-family: 'Roboto', sans-serif
+        cursor: pointer
+        background-image: none
+        border: 1px solid transparent
+        white-space: nowrap
+        padding: 10px 16px
+        font-size: 14px
+        line-height: 1.42857143
+        border-radius: 0
+        -webkit-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
+        color: #fff
+        background-color: #337ab7
+        border-color: #2e6da4
+    .add-description
         display: block
         width: 100%
         height: auto
-        background-color: rgba(10, 10, 10, 0.7)
-        padding: 15px
-        .item-edit-data-user
-            margin: 0px 0px 20px 0px
-            label
-                font-family: 'Roboto', sans-serif
-                font-size: 14px
-                color: rgba(255, 255, 255, 1)
-            input,textarea
-                height: 43px
-                padding: 10px 16px
-                font-family: 'Roboto', sans-serif
-                font-size: 14px
-                margin: 0px
-                background-color: #303030
-                border: 1px solid rgba(0, 0, 0, 0.4)
-                color: rgba(255, 255, 255, 0.65)
-            textarea
-                height:  auto
-        .has-error
-            input
-                border: 1px solid red
-        button
-            display: block
-            margin: 0px auto
-            font-weight: 400
-            text-align: center
-            vertical-align: middle
-            -ms-touch-action: manipulation
-            touch-action: manipulation
-            font-family: 'Roboto', sans-serif
-            cursor: pointer
-            background-image: none
-            border: 1px solid transparent
-            white-space: nowrap
-            padding: 10px 16px
-            font-size: 14px
-            line-height: 1.42857143
-            border-radius: 0
-            -webkit-user-select: none
-            -moz-user-select: none
-            -ms-user-select: none
-            user-select: none
-            color: #fff
-            background-color: #337ab7
-            border-color: #2e6da4
+        label
+            margin-left: .5rem
+    .body-description
+        display: none
+        width: 100%
+        height: auto

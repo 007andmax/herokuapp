@@ -19,13 +19,16 @@ class App extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.event.action && nextProps.event.action === ERROR) {
-      console.log("nextProps", nextProps);
+    
       this.setState({
         showAlert: true,
         alertMessage: nextProps.event.data.error
-      });
+      },this.resetAlert);
     }
     // return true;
+  }
+  resetAlert() {
+    this.setState({showAlert:false})
   }
   render() {
     return (

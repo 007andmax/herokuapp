@@ -3,6 +3,7 @@ import { ADD_USER, UPDATE_USER } from "../constants/action-user";
 import { connect } from "react-redux";
 import { EditUser, removeUser } from "../actions/user";
 import { showAlert } from "../actions/alert";
+import Pagination from "react-js-pagination";
 import "../assets/css/user-list.css";
 let axios = require("axios");
 class ListUser extends Component {
@@ -10,15 +11,16 @@ class ListUser extends Component {
     super(props);
     this.state = {
       users: [],
-      pagUser: [],
       offset: 0,
-      name: ""
+      name: "",
+      total_count: 0,
+      activePage: 1
     };
     this.RemoveUser = this.RemoveUser.bind(this);
     this.EditUser = this.EditUser.bind(this);
     this.onInitSearch = this.onInitSearch.bind(this);
-    this.prevPage = this.prevPage.bind(this);
-    this.nextPage = this.nextPage.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.resetSearch = this.resetSearch.bind(this);
   }
   componentWillMount() {
     this.getUsers();
@@ -28,14 +30,14 @@ class ListUser extends Component {
       .get(
         `https://frontend-test-job.herokuapp.com/api/v1/users?api_key=${
           this.props.apikey
-        }&offset=${this.state.offset}&name=${this.state.name}`
+        }&offset=${this.state.offset * 10}&name=${this.state.name}`
       )
       .then(response => {
         console.log(response);
         if (response.status === 200) {
           this.setState({
             users: response.data.users,
-            pagUser: response.data.users
+            total_count: (response.data.total_count) ? response.data.total_count : response.data.users.length
           });
         }
       })
@@ -48,7 +50,7 @@ class ListUser extends Component {
       if (this.state.users.length < 10) {
         let users = this.state.users;
         users.push(nextProps.userState.data);
-        this.setState({ users: users, pagUser: users });
+        this.setState({ users: users });
       }
     }
     if (
@@ -64,10 +66,7 @@ class ListUser extends Component {
     }
     // return true;
   }
-  handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({ activePage: pageNumber });
-  }
+
   EditUser(e) {
     let index = Number(e.target.getAttribute("index"));
     this.props.onInitEditUser(this.state.users[index]);
@@ -86,7 +85,19 @@ class ListUser extends Component {
           let users = this.state.users;
           this.props.onInitRemoveUser({ id: users[index].id });
           users.splice(index, 1);
-          this.setState({ users: users });
+
+          if (this.state.activePage > 1 && users.length === 0) {
+            let currentPage = this.state.activePage;
+            let offset = this.state.offset;
+            currentPage--;
+            offset--;
+            this.setState(
+              { activePage: currentPage, offset: offset },
+              this.getUsers
+            );
+          } else {
+            this.setState({ users: users });
+          }
         }
       })
       .catch(error => {
@@ -95,25 +106,27 @@ class ListUser extends Component {
   }
   onInitSearch() {
     if (this.search.value.length > 0) {
-      this.setState({ name: this.search.value, offset: 0 }, this.getUsers());
+      this.setState(
+        { name: this.search.value, offset: 0, activePage: 1 },
+        this.getUsers
+      );
     }
   }
-  prevPage(e) {
-    e.preventDefault();
-    let offset = this.state.offset;
-    if (offset > 0) {
-      offset--;
-      this.setState({ offset: offset }, this.getUsers());
-    }
+  resetSearch() {
+    this.setState({ name: "", offset: 0, activePage: 1 }, this.getUsers);
   }
-  nextPage(e) {
-    e.preventDefault();
-    let offset = this.state.offset;
 
-    if (this.state.users.length >= 10) {
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    let currentPage = this.state.activePage;
+    let offset = this.state.offset;
+    if (currentPage < pageNumber) {
       offset++;
-      this.setState({ offset: offset }, this.getUsers());
     }
+    if (currentPage > pageNumber) {
+      offset--;
+    }
+    this.setState({ activePage: pageNumber, offset: offset }, this.getUsers);
   }
   render() {
     return (
@@ -132,6 +145,7 @@ class ListUser extends Component {
                 placeholder="Enter user name"
               />{" "}
               <button onClick={this.onInitSearch}>Seach</button>
+              <button onClick={this.resetSearch}>Reset</button>
             </div>
           </div>
 
@@ -157,28 +171,13 @@ class ListUser extends Component {
             );
           })}
           <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li
-                className={
-                  this.state.offset === 0 ? "page-item disabled" : "page-item"
-                }
-              >
-                <a className="page-link" href="#" onClick={this.prevPage}>
-                  Previous
-                </a>
-              </li>
-              <li
-                className={
-                  this.state.users.length < 10
-                    ? "page-item disabled"
-                    : "page-item"
-                }
-              >
-                <a className="page-link" href="#" onClick={this.nextPage}>
-                  Next
-                </a>
-              </li>
-            </ul>
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={10}
+              totalItemsCount={this.state.total_count}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            />
           </nav>
         </div>
       </div>

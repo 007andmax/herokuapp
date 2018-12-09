@@ -93,13 +93,26 @@
         display: block
         width: 150px
         margin: 20px auto
-#react-paginate ul 
-    display: inline-block
-    padding-left: 15px
-    padding-right: 15px
-
-
-#react-paginate li 
-    display: inline-block
+    .pagination
+        display: flex
+        padding-left: 0
+        list-style: none
+        border-radius: .25rem
+        margin-top: .5rem
+        margin-bottom: .5rem
+        a
+            position: relative
+            display: block
+            padding: .5rem .75rem
+            margin-left: -1px
+            line-height: 1.25
+            color: #007bff
+            background-color: #fff
+            border: 1px solid #dee2e6
+        .active
+            z-index: 1
+            color: #fff
+            background-color: #007bff
+            border-color: #007bff
 
 

@@ -28,7 +28,7 @@ class Alert extends Component {
     super(props);
   }
   componentWillReceiveProps(nextProps) {
-   
+   console.log('nextProps.showAlert',nextProps.showAlert);
     if (nextProps.showAlert)
     {
       this.setState({

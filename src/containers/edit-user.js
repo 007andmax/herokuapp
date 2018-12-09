@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { UpdateUser } from "./class/update-user";
-import { addUser } from "../actions/user";
+import { addUser, updateUser } from "../actions/user";
 import { EDIT_USER } from "../constants/action-user";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
+import { showAlert } from "../actions/alert";
 import "../assets/css/edit-user.css";
 let axios = require("axios");
 const initialState = {
-    id:0,
+  id: 0,
   email: "",
   first_name: "",
   last_name: "",
@@ -35,27 +36,41 @@ class EditUser extends Component {
 
     this.UpdateUser = this.UpdateUser.bind(this);
     this.checkAddDescription = this.checkAddDescription.bind(this);
+    this.closed = this.closed.bind(this);
   }
   componentWillReceiveProps(nextProps) {
-   
-    if (nextProps.userState.action && nextProps.userState.action === EDIT_USER) {
-     this.resetData(nextProps.userState.data);
+    if (
+      nextProps.userState.action &&
+      nextProps.userState.action === EDIT_USER
+    ) {
+      this.resetData(nextProps.userState.data);
     }
     // return true;
   }
+  closed() {
+    this.setState(initialState);
+    const node = ReactDOM.findDOMNode(this);
+    node.querySelector(".body-description").style.display = "none";
+    node.querySelector("#edit-about").checked = false;
+    node.classList.add("hide-edit-user");
+  }
   resetData(user) {
-    this.setState(initialState,() => {
-        this.setState({id:user.id, email: user.email,
+    this.setState(initialState, () => {
+      this.setState({
+        id: user.id,
+        email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
         phone: user.phone,
-        addDescription:  (user.about === "") ? false : true,
-        description: user.about})
+        addDescription: user.about === "" ? false : true,
+        description: user.about
+      });
     });
     const node = ReactDOM.findDOMNode(this);
-    console.log('node',node);
-    node.querySelector(".body-description").style.display = (user.about === "") ? "none" : "block";
-    node.querySelector("#edit-about").checked = (user.about === "") ? false : true;
+    node.querySelector(".body-description").style.display =
+      user.about === "" ? "none" : "block";
+    node.querySelector("#edit-about").checked =
+      user.about === "" ? false : true;
     node.classList.remove("hide-edit-user");
   }
   handleUserInput = e => {
@@ -73,7 +88,7 @@ class EditUser extends Component {
     let first_nameValid = this.state.first_nameValid;
     let last_nameValid = this.state.last_nameValid;
     let descriptionValid = this.state.descriptionValid;
-    console.log('descriptionValid',descriptionValid)
+    console.log("descriptionValid", descriptionValid);
     switch (fieldName) {
       case "email":
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -101,7 +116,7 @@ class EditUser extends Component {
         fieldValidationErrors.description = descriptionValid
           ? ""
           : " is invalid";
-          console.log('descriptionValid',descriptionValid)
+        console.log("descriptionValid", descriptionValid);
         break;
       default:
         break;
@@ -120,7 +135,7 @@ class EditUser extends Component {
   }
 
   validateForm() {
-  /*  console.log("this.state.emailValid", this.state.emailValid);
+    /*  console.log("this.state.emailValid", this.state.emailValid);
     console.log("this.state.phoneValid", this.state.phoneValid);
     console.log("this.state.first_nameValid", this.state.first_nameValid);
     console.log("this.state.last_nameValid", this.state.last_nameValid);
@@ -150,37 +165,41 @@ class EditUser extends Component {
     );
     console.log("updateUser", updateUser);
     axios
-      .put(`https://frontend-test-job.herokuapp.com/api/v1/users/${this.state.id}`, {params:updateUser})
+      .put(
+        `https://frontend-test-job.herokuapp.com/api/v1/users/${this.state.id}`,
+        updateUser
+      )
       .then(response => {
         console.log(response);
         if (response.status === 200) {
-      /*    this.resetData();
-          this.props.addUserComplite(response.data);*/
-        } 
+          this.closed();
+          this.props.updateUserComplite(response.data);
+        }
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch(error => {
+        this.props.showErrorAlert(error.response.data);
       });
   }
   checkAddDescription(e) {
     const node = ReactDOM.findDOMNode(this);
-    console.log(e.target
-        .checked);
-    node.querySelector(".body-description").style.display = e.target
-      .checked
+    console.log(e.target.checked);
+    node.querySelector(".body-description").style.display = e.target.checked
       ? "block"
       : "none";
-    this.setState({
-      addDescription: e.target.checked,
-      description: "",
-      descriptionValid: !e.target.checked
-    }, this.validateForm);
+    this.setState(
+      {
+        addDescription: e.target.checked,
+        description: "",
+        descriptionValid: !e.target.checked
+      },
+      this.validateForm
+    );
   }
   render() {
     return (
       <div className="edit-user her-container hide-edit-user">
         <div className="her-head">
-          <h3>Edit user</h3>
+          <h3>Edit user</h3> <div className="closed" onClick={this.closed} />
         </div>
         <div className="her-body add-user-body">
           <form>
@@ -296,13 +315,19 @@ class EditUser extends Component {
   }
 }
 let mapStateToProps = state => {
-    return { userState: state.userState };
+  return { userState: state.userState };
 };
 
 let mapDispatchToProps = dispatch => {
   return {
     addUserComplite: data => {
       dispatch(addUser(data));
+    },
+    showErrorAlert: data => {
+      dispatch(showAlert(data));
+    },
+    updateUserComplite: data => {
+      dispatch(updateUser(data));
     }
   };
 };

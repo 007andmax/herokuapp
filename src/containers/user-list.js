@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ADD_USER } from "../constants/action-user";
+import { ADD_USER,UPDATE_USER } from "../constants/action-user";
 import { connect } from "react-redux";
 import {EditUser} from "../actions/user";
 import "../assets/css/user-list.css";
@@ -8,10 +8,12 @@ class ListUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: []
+      users: [],
+
     };
     this.RemoveUser = this.RemoveUser.bind(this);
     this.EditUser = this.EditUser.bind(this);
+    this.onInitSearch = this.onInitSearch.bind(this);
   }
   componentWillMount() {
     axios
@@ -34,6 +36,12 @@ class ListUser extends Component {
     if (nextProps.userState.action && nextProps.userState.action === ADD_USER) {
       let users = this.state.users;
       users.push(nextProps.userState.data);
+      this.setState({ users: users });
+    }
+    if (nextProps.userState.action && nextProps.userState.action === UPDATE_USER) {
+      let users = this.state.users;
+      let index = users.findIndex(item => item.id === nextProps.userState.data.id);
+      users[index] = nextProps.userState.data;
       this.setState({ users: users });
     }
     // return true;
@@ -62,6 +70,17 @@ this.props.onInitEditUser(this.state.users[index]);
         console.log(error);
       });
   }
+  onInitSearch() {
+    if (this.search.value.length > 0)
+    {
+let index = this.state.users.findIndex(item => item.first_name.toLowerCase().indexOf(this.search.value.toLowerCase()) > -1 || item.last_name.toLowerCase().indexOf(this.search.value.toLowerCase()));
+if (index > -1)
+{
+
+}   
+}
+
+  }
   render() {
     return (
       <div className="her-container user-list">
@@ -69,6 +88,12 @@ this.props.onInitEditUser(this.state.users[index]);
           <h3>User List</h3>
         </div>
         <div className="her-body user-list-body">
+        <div className="user-search">
+        <h4>Search user</h4>
+        <div className="search-body">
+        <input className="form-control" type="text"  ref={item => (this.search = item)} placeholder="Enter user name"/> <button onClick={this.onInitSearch}>Seach</button>
+        </div>
+        </div>
           {this.state.users.map((item, index) => {
             return (
               <div key={item.id} className="user-item">

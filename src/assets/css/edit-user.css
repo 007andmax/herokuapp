@@ -2,6 +2,22 @@
   margin: 20px 0px 0px 0px;
 }
 
+.edit-user .her-head {
+  position: relative;
+}
+
+.edit-user .her-head .closed {
+  display: block;
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background-image: url("../img/remove.svg");
+  background-size: contain;
+}
+
 .hide-edit-user {
   display: none !important;
 }

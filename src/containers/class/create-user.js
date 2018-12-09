@@ -11,6 +11,10 @@ export class CreateUser {
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone = phone;
-        this.about = about;
+        if (about)
+        {
+            this.about = about;
+        }
+       
     }
 }

@@ -3,6 +3,7 @@ import { CreateUser } from "./class/create-user";
 import { addUser, EditUser } from "../actions/user";
 import { ADD_USER,EDIT_USER } from "../constants/action-user";
 import { connect } from "react-redux";
+import { showAlert } from "../actions/alert";
 import "../assets/css/add-user.css";
 let axios = require("axios");
 const initialState = {
@@ -146,12 +147,11 @@ class AddUser extends Component {
         if (response.status === 200) {
           this.resetData();
           this.props.addUserComplite(response.data);
-        } else {
-          
-        }
+        } 
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error)=> {
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        this.props.showErrorAlert(error.response.data);
       });
   }
   checkAddDescription(e) {
@@ -292,7 +292,10 @@ let mapDispatchToProps = dispatch => {
   return {
     addUserComplite: data => {
       dispatch(addUser(data));
-    }
+    },
+    showErrorAlert: data => {
+      dispatch(showAlert(data));
+    },
   };
 };
 export default connect(

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { UpdateUser } from "./class/update-user";
 import { addUser, updateUser } from "../actions/user";
-import { EDIT_USER } from "../constants/action-user";
+import { EDIT_USER, REMOVE_USER } from "../constants/action-user";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import { showAlert } from "../actions/alert";
@@ -44,6 +44,15 @@ class EditUser extends Component {
       nextProps.userState.action === EDIT_USER
     ) {
       this.resetData(nextProps.userState.data);
+    }
+    if (
+      nextProps.userState.action &&
+      nextProps.userState.action === REMOVE_USER
+    ) {
+     if (this.state.id === nextProps.userState.data.id)
+     {
+       this.closed();
+     }
     }
     // return true;
   }

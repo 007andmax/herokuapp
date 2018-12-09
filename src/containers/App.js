@@ -3,7 +3,7 @@ import AddUser from "./add-user";
 import UserList from "./user-list";
 import EditUser from "./edit-user";
 import Alert from "./alert";
-import {ERROR} from "../constants/event";
+import { ERROR } from "../constants/event";
 import { connect } from "react-redux";
 import "../assets/css/update.css";
 import "../assets/css/bootstrap.min.css";
@@ -18,30 +18,32 @@ class App extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-   
     if (nextProps.event.action && nextProps.event.action === ERROR) {
-    this.setState({showAlert: true,alertMessage:nextProps.event.data.error })
+      console.log("nextProps", nextProps);
+      this.setState({
+        showAlert: true,
+        alertMessage: nextProps.event.data.error
+      });
     }
     // return true;
   }
   render() {
     return (
       <div className="her-fon">
-      <div className="container">
-        <div className="row">
-          <div className="col-4 mr-auto ml-auto">
-            <AddUser apikey={this.API_KEY} />
-            <EditUser apikey={this.API_KEY} />
-            <UserList apikey={this.API_KEY} />
-           
+        <div className="container">
+          <div className="row">
+            <div className="col-4 mr-auto ml-auto">
+              <AddUser apikey={this.API_KEY} />
+              <EditUser apikey={this.API_KEY} />
+              <UserList apikey={this.API_KEY} />
+            </div>
           </div>
         </div>
+        <Alert
+          showAlert={this.state.showAlert}
+          message={this.state.alertMessage}
+        />
       </div>
-       <Alert
-       showAlert={this.state.showAlert}
-       message={this.state.alertMessage}
-     />
-     </div>
     );
   }
 }
@@ -51,11 +53,9 @@ let mapStateToProps = state => {
 };
 
 let mapDispatchToProps = dispatch => {
-return {
- 
-};
+  return {};
 };
 export default connect(
-mapStateToProps,
-mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App);

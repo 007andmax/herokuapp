@@ -97,7 +97,7 @@ class EditUser extends Component {
     let first_nameValid = this.state.first_nameValid;
     let last_nameValid = this.state.last_nameValid;
     let descriptionValid = this.state.descriptionValid;
-    console.log("descriptionValid", descriptionValid);
+   
     switch (fieldName) {
       case "email":
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -125,7 +125,7 @@ class EditUser extends Component {
         fieldValidationErrors.description = descriptionValid
           ? ""
           : " is invalid";
-        console.log("descriptionValid", descriptionValid);
+      
         break;
       default:
         break;
@@ -144,11 +144,7 @@ class EditUser extends Component {
   }
 
   validateForm() {
-    /*  console.log("this.state.emailValid", this.state.emailValid);
-    console.log("this.state.phoneValid", this.state.phoneValid);
-    console.log("this.state.first_nameValid", this.state.first_nameValid);
-    console.log("this.state.last_nameValid", this.state.last_nameValid);
-    console.log("this.state.descriptionValid", this.state.descriptionValid);*/
+   
     this.setState({
       formValid:
         this.state.emailValid &&
@@ -172,14 +168,14 @@ class EditUser extends Component {
       this.state.phone,
       this.state.addDescription ? this.state.description : undefined
     );
-    console.log("updateUser", updateUser);
+ 
     axios
       .put(
         `https://frontend-test-job.herokuapp.com/api/v1/users/${this.state.id}`,
         updateUser
       )
       .then(response => {
-        console.log(response);
+      
         if (response.status === 200) {
           this.closed();
           this.props.updateUserComplite(response.data);
@@ -191,7 +187,7 @@ class EditUser extends Component {
   }
   checkAddDescription(e) {
     const node = ReactDOM.findDOMNode(this);
-    console.log(e.target.checked);
+ 
     node.querySelector(".body-description").style.display = e.target.checked
       ? "block"
       : "none";

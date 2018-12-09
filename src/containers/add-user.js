@@ -64,7 +64,6 @@ class AddUser extends Component {
     let first_nameValid = this.state.first_nameValid;
     let last_nameValid = this.state.last_nameValid;
     let descriptionValid = this.state.descriptionValid;
-    console.log('descriptionValid',descriptionValid)
     switch (fieldName) {
       case "email":
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -92,7 +91,7 @@ class AddUser extends Component {
         fieldValidationErrors.description = descriptionValid
           ? ""
           : " is invalid";
-          console.log('descriptionValid',descriptionValid)
+         
         break;
       default:
         break;
@@ -111,11 +110,7 @@ class AddUser extends Component {
   }
 
   validateForm() {
-  /*  console.log("this.state.emailValid", this.state.emailValid);
-    console.log("this.state.phoneValid", this.state.phoneValid);
-    console.log("this.state.first_nameValid", this.state.first_nameValid);
-    console.log("this.state.last_nameValid", this.state.last_nameValid);
-    console.log("this.state.descriptionValid", this.state.descriptionValid);*/
+ 
     this.setState({
       formValid:
         this.state.emailValid &&
@@ -139,18 +134,18 @@ class AddUser extends Component {
       this.state.phone,
       this.state.addDescription ? this.state.description : undefined
     );
-    console.log("createUser", createUser);
+  
     axios
       .post("https://frontend-test-job.herokuapp.com/api/v1/users", createUser)
       .then(response => {
-        console.log(response);
+       
         if (response.status === 200) {
           this.resetData();
           this.props.addUserComplite(response.data);
         } 
       })
       .catch((error)=> {
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+       
         this.props.showErrorAlert(error.response.data);
       });
   }

@@ -33,7 +33,7 @@ class ListUser extends Component {
         }&offset=${this.state.offset * 10}&name=${this.state.name}`
       )
       .then(response => {
-        console.log(response);
+      
         if (response.status === 200) {
           this.setState({
             users: response.data.users,
@@ -80,7 +80,7 @@ class ListUser extends Component {
         { params: { api_key: this.props.apikey } }
       )
       .then(response => {
-        console.log(response);
+     
         if (response.status === 200) {
           let users = this.state.users;
           this.props.onInitRemoveUser({ id: users[index].id });
@@ -117,7 +117,7 @@ class ListUser extends Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
+  
     let currentPage = this.state.activePage;
     let offset = this.state.offset;
     if (currentPage < pageNumber) {
@@ -185,7 +185,7 @@ class ListUser extends Component {
   }
 }
 let mapStateToProps = state => {
-  console.log("state", state);
+ 
   return { userState: state.userState };
 };
 

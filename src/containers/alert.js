@@ -3,7 +3,7 @@ import posed, { PoseGroup } from "react-pose";
 import "../assets/css/alert.css";
 const Modal = posed.div({
   enter: {
-    top: `calc(50% - 65px)`,
+    top: "calc(50% - 65px)",
     opacity: 1,
     delay: 300,
     transition: {
@@ -12,7 +12,7 @@ const Modal = posed.div({
     }
   },
   exit: {
-    top:'calc(-100% - 130px)',
+    top:"calc(-100% - 130px)",
     opacity: 0,
     transition: { duration: 150 }
   }
@@ -28,7 +28,7 @@ class Alert extends Component {
     super(props);
   }
   componentWillReceiveProps(nextProps) {
-   console.log('nextProps.showAlert',nextProps.showAlert);
+  
     if (nextProps.showAlert)
     {
       this.setState({
@@ -59,8 +59,6 @@ class Alert extends Component {
           </div>
          
           </Modal>
-
-          // If animating more than one child, each needs a `key`
         ]}
       </PoseGroup>
     );

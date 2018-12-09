@@ -4,6 +4,7 @@ import { addUser, EditUser } from "../actions/user";
 import { ADD_USER,EDIT_USER } from "../constants/action-user";
 import { connect } from "react-redux";
 import { showAlert } from "../actions/alert";
+import ReactDOM from "react-dom";
 import "../assets/css/add-user.css";
 let axios = require("axios");
 const initialState = {
@@ -46,8 +47,9 @@ class AddUser extends Component {
   }
   resetData() {
     this.setState(initialState);
-    document.body.querySelector(".body-description").style.display = "none";
-    document.body.querySelector("#add-about").checked = false;
+    const node = ReactDOM.findDOMNode(this);
+    node.querySelector(".body-description").style.display = "none";
+    node.querySelector("#add-about").checked = false;
   }
   handleUserInput = e => {
     const name = e.target.name;
@@ -150,7 +152,8 @@ class AddUser extends Component {
       });
   }
   checkAddDescription(e) {
-    document.body.querySelector(".body-description").style.display = e.target
+    const node = ReactDOM.findDOMNode(this);
+    node.querySelector(".body-description").style.display = e.target
       .checked
       ? "block"
       : "none";
